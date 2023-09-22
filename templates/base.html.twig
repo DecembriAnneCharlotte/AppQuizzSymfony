@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- META DATA -->
+    <meta charset="UTF-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Sash – Symfony Bootstrap 5  Admin & Dashboard Template">
+    <meta name="author" content="Spruko Technologies Private Limited">
+    <meta name="keywords" content="admin dashboard, admin dashboard template, admin template, bootstrap 5 symfony, symfony, symfony bootstrap admin, symfony template, symfony bootstrap template, symfony admin, symfony admin dashboard, symfony admin dashboard template, symfony admin panel, symfony admin template, symfony dashboard, dashboard template">
+    {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+    <meta name="Content-Type" content="UTF-8">
+    <meta name="Content-Language" content="fr">
+    <meta name="Subject" content="Famille">
+    <meta name="Author" content="Glessmer Philippe">
+    <meta name="Publisher" content="Glessmer Philippe">
+    <meta name="Identifier-Url" content="">
+    <meta name="Reply-To" content="web@glessmer.fr">
+    <meta name="Revisit-After" content="7 days">
+    <meta name="Robots" content="all">
+    <meta name="Rating" content="general">
+    <meta name="Distribution" content="global">
+    <meta name="Geography" content="France">
+    <meta name="Category" content="family">
+    <meta name="DC.Content-Type" content="UTF-8">
+    <meta name="DC.Content-Language" content="fr">
+    <meta name="DC.Subject" content="Famille">
+    <meta name="DC.Author" content="Glessmer Philippe">
+    <meta name="DC.Publisher" content="Glessmer Philippe">
+    <meta name="DC.Identifier-Url" content="">
+    <meta name="DC.Reply-To" content="web@glessmer.fr">
+    <meta name="DC.Revisit-After" content="7 days">
+    <meta name="DC.Robots" content="all">
+    <meta name="DC.Rating" content="general">
+    <meta name="DC.Distribution" content="global">
+    <meta name="DC.Geography" content="France">
+    <meta name="DC.Category" content="family">
+    <!-- TITLE -->
+    <title>{% block title %}Titre{% endblock %}</title>
+
+    {% block stylesheets %}
+
+    {{ include('./layouts/styles.html.twig') }}
+
+    {% endblock %}
+
+</head>
+<body class="app sidebar-mini ltr">
+
+<!-- GLOBAL-LOADER -->
+<div id="global-loader">
+    <img src="{{absolute_url(asset('build/images/loader.svg'))}}" class="loader-img" alt="Loader">
+</div>
+<!-- /GLOBAL-LOADER -->
+
+<!-- PAGE -->
+<div class="page">
+    <div class="page-main">
+
+        <!-- APP-HEADER -->
+        {{ include('./layouts/app-header.html.twig') }}
+        <!-- APP-HEADER CLOSED -->
+
+        <!-- APP-SIDEBAR -->
+        {{ include('./layouts/app-sidebar.html.twig') }}
+        <!-- APP-SIDEBAR CLOSED-->
+
+        <!--app-content open-->
+        <div class="main-content app-content mt-0">
+            <div class="side-app">
+
+                <!-- CONTAINER -->
+                <div class="main-container container-fluid">
+
+                    <!-- CONTENT -->
+                    {% block body %}
+                    {% endblock %}
+                    <!-- CONTENT CLOSED-->
+
+                </div>
+                <!-- CONTAINER CLOSED -->
+            </div>
+        </div>
+        <!--app-content closed-->
+
+    </div>
+
+    <!-- COUNTRY-SELECTOR-MODAL -->
+    {{ include('./layouts/modals.html.twig') }}
+    <!-- END COUNTRY-SELECTOR-MODAL -->
+
+    <!-- FOOTER -->
+    {{ include('./layouts/sidebar-right.html.twig') }}
+    <!-- FOOTER CLOSED-->
+
+    <!-- FOOTER -->
+    {{ include('./layouts/footer.html.twig') }}
+    <!-- FOOTER CLOSED-->
+</div>
+
+{% block javascripts %}
+{{ include('./layouts/scripts.html.twig') }}
+{% endblock %}
+
+</body>
+</html>

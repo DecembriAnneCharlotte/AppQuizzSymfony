@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Quizz{% endblock %}
+
+{% block body %}
+    <h1>Nouveau Quizz</h1>
+
+    <div class="card">
+        <div class="card-body">
+        {{ include('quizz/quizz/_form.html.twig') }}
+        </div>
+    </div>
+    <a href="{{ path('app_quizz_quizz_index') }}" class="btn btn-primary mt-3 mx-3">Retour</a>
+
+{% endblock %}

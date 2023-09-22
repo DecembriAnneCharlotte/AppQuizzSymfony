@@ -1,0 +1,53 @@
+{% extends 'landing-base.html.twig' %}
+
+{% block title %}Hello HomeController!
+{% endblock %}
+
+{% block body %}
+
+	<h1>Liste des quizz</h1>
+
+
+	<div class="row">
+		<div class="col-md-8">
+			Liste quizz
+
+			{% for categorie in categories %}
+
+				{% for quizz in categorie.quizzs %}
+
+
+					<div class="card w-200">
+						<h5 class="card-header">{{quizz.title}}</h5>
+						<div class="card-body">
+							<h5 class="card-title">Déscription :</h5>
+							<p class="card-text">{{quizz.description}}</p>
+							<a href="{{ path('app_quizz_front_quizz', {'id' : quizz.id})}}" class="btn btn-primary">Voir</a>
+							<a href="{{ path('app_home') }}" class="btn btn-primary my-3">Retour</a>
+						</div>
+					</div>
+
+				{% endfor %}
+			{% endfor %}
+
+		</div>
+
+		<div class="col-md-4">
+			<div class="card w-200">
+				<h5 class="card-header">Les categories</h5>
+
+				<div class="list-group">
+					{% for categorie in categories %}
+						<a href="#" class="list-group-item list-group-item-action disabled">{{ categorie.name}}</a>
+					{% endfor %}
+
+
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}

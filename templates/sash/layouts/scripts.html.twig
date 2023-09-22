@@ -1,0 +1,36 @@
+    <!-- BACK-TO-TOP -->
+    <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+
+    <!-- JQUERY JS -->
+    <script src="{{absolute_url(asset('build/plugins/jquery/jquery.min.js'))}}"></script>
+
+    <!-- BOOTSTRAP JS -->
+    <script src="{{absolute_url(asset('build/plugins/bootstrap/js/popper.min.js'))}}"></script>
+    <script src="{{absolute_url(asset('build/plugins/bootstrap/js/bootstrap.min.js'))}}"></script>
+
+    <!-- SIDE-MENU JS -->
+    <script src="{{absolute_url(asset('build/plugins/sidemenu/sidemenu.js'))}}"></script>
+
+	<!-- TypeHead js -->
+	<script src="{{absolute_url(asset('build/plugins/bootstrap5-typehead/autocomplete.js'))}}"></script>
+
+    <!-- SIDEBAR JS -->
+    <script src="{{absolute_url(asset('build/plugins/sidebar/sidebar.js'))}}"></script>
+
+    <!-- Perfect SCROLLBAR JS-->
+    <script src="{{absolute_url(asset('build/plugins/p-scroll/perfect-scrollbar.js'))}}"></script>
+    <script src="{{absolute_url(asset('build/plugins/p-scroll/pscroll.js'))}}"></script>
+    <script src="{{absolute_url(asset('build/plugins/p-scroll/pscroll-1.js'))}}"></script>
+
+
+    <!-- STICKY JS -->
+    {{ encore_entry_script_tags('js/typehead') }}
+
+    <!-- STICKY JS -->
+    {{ encore_entry_script_tags('js/sticky') }}
+    
+    <!-- THEME COLOR  JS -->
+    {{ encore_entry_script_tags('js/themeColors') }}
+
+    <!-- CUSTOM JS -->
+    {{ encore_entry_script_tags('js/custom') }}
