@@ -4,58 +4,42 @@
 
 {% block body %}
 
-    <h1>Quizz</h1>
+<h1>Quizz</h1>
 
-    <div class="card">
-        <div class="card-body">
-            <h3 class="card-title">{{quizz.title}}</h3>
-            <h5>Description :</h5>
-            <p>{{quizz.description}}</p>
-        </div>
+<div class="card">
+    <div class="card-body">
+        <h3 class="card-title">{{quizz.title}}</h3>
+        <h5>Description :</h5>
+        <p>{{quizz.description}}</p>
     </div>
+</div>
 
-    {# {% if score is not null %}
-        <h1>Résultats du Quizz</h1>
-        <p>Votre score est de {{ score }} sur {{ total }}.</p>
-        <hr>
-    {% endif %} #}
-
-    {# {{dump(quizz)}} #}
-    <form method="post">
-
+{% if score is not null %}
+<h1>Résultats du Quizz</h1>
+<p>Votre score est de {{ score }} sur {{ total }}.</p>
+<hr>
+<a href="{{ path('app_quizz_front_listequizz', {'id' : quizz.id}) }}" class="btn btn-primary my-3">Retour</a>
+{% endif %}
+<form method="post">
     {% for index, question in quizz.quizzQuestions %}
-
-        {# {{dump(question)}} #}
-
-
-        <div class="card my-4">
+    <div class="card my-4">
         <div class="card-header">
-            <h5>{{question.question}} {{question.id}}</h5>
+            <h5>{{question.question}}</h5>
         </div>
-
+        <ul class="list-group list-group-flush">
         {% for choiceIndex, reponse in question.quizzChoices %}
 
-        {# {{dump(reponse)}} #}
-
-
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-<input type="checkbox" name="answers[{{ question.id }}][{{ reponse.id }}]" value="1">
-            {{reponse.reponse}} {{reponse.id}}</li>
-        </ul>
-
-
+            <li class="list-group-item {{ solution(reponse, score)}}">
+                <input type="checkbox" {{ maselection(quizzU, question.id, reponse.id) }} name="answers[{{ question.id }}][{{ reponse.id }}]" value="1">
+                {{reponse.reponse}}
+            </li>
         {% endfor %}
-
-        </div>
+    </ul>
+    </div>
     {% endfor %}
-
-        <input type="submit" value="Submit">
-    </form>
-
-
-    <a href="{{ path('app_quizz_front_listequizz', {'id' : quizz.id}) }}" class="btn btn-primary my-3">Retour</a>
-
-
-
+    {% if score is null %}
+    <input type="submit"  class="btn btn-success w-100" value="Submit">
+    {% endif %}
+</form>
+<a href="{{ path('app_quizz_front_listequizz', {'id' : quizz.id}) }}" class="btn btn-primary my-3">Retour</a>
 {% endblock %}

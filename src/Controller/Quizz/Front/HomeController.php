@@ -3,7 +3,10 @@
 namespace App\Controller\Quizz\Front;
 
 use App\Entity\Quizz\Quizz;
+use App\Entity\Quizz\QuizzUser;
 use App\Entity\Quizz\QuizzCategories;
+use App\Entity\Quizz\QuizzUserAnswers;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\Quizz\QuizzRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,24 +43,51 @@ class HomeController extends AbstractController
 
 
     #[Route('/quizz/quizz/{id}', name: 'app_quizz_front_quizz')]
-    public function quizz(Quizz $quizz , Request $request): Response
+    public function quizz(Quizz $quizz, Request $request, EntityManagerInterface $entityManager, QuizzQuestionsRepository $questionsRepository, QuizzChoicesRepository $choicesRepository): Response
     {
-
-        if ($request->isMethod('POST')){
+        // Par defaut on ne veux pas de la correction.
+        $score = null;
+        $quizzUser = null;
+        if ($request->isMethod('POST')) {
             // $answers = $request->request->get('answers');
             $post = $request->request->all();
             $answers = $post['answers'];
-            dd($answers);
+            // La on veux maintenant les corrections.
+            $score = 20;
+            // On enregistre la partie
+            $quizzUser = new QuizzUser();
+            $quizzUser->setQuizz($quizz);
+            $quizzUser->setUser($this->getUser());
+            $entityManager->persist($quizzUser);
+
+            // En enregitre les réponses données par l'user
+            foreach ($answers as $key =>  $answer) {
+                foreach ($answer as $keyChoice => $choiceUser) {
+                    $answersUser = new QuizzUserAnswers();
+                    $objQuestion = $questionsRepository->find($key);
+                    $answersUser->setQuestion($objQuestion);
+                    $objChoice = $choicesRepository->find($keyChoice);
+                    $answersUser->setChoice($objChoice);
+                    $answersUser->setUserQuizz($quizzUser);
+                    $entityManager->persist($answersUser);
+                  
+                }
+            }
+            $entityManager->flush();
+            
         }
 
         return $this->render('quizz/front/quizz.html.twig', [
+            'quizzU' => $quizzUser,
+            'total' => 0,
+            'score' => $score,
             'controller_name' => 'HomeController',
             'quizz' => $quizz,
         ]);
     }
 
     #[Route('/quizz/front/listequizz', name: 'app_quizz_front_listequizz_all')]
-    public function listequizzall(QuizzRepository $quizzrepository , QuizzCategoriesRepository $quizzcategorierepository): Response
+    public function listequizzall(QuizzRepository $quizzrepository, QuizzCategoriesRepository $quizzcategorierepository): Response
     {
         return $this->render('quizz/front/listQuizzAll.html.twig', [
             'controller_name' => 'HomeController',
@@ -78,7 +108,4 @@ class HomeController extends AbstractController
 
         ]);
     }
-
-
-
 }
