@@ -5,21 +5,33 @@
 {% block body %}
 
 <h1>Quizz</h1>
-
-<div class="card">
-    <div class="card-body">
-        <h3 class="card-title">{{quizz.title}}</h3>
-        <h5>Description :</h5>
-        <p>{{quizz.description}}</p>
+<div class="row">
+    <div class="col-6">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">{{quizz.title}}</h3>
+                <h5>Description :</h5>
+                <p>{{quizz.description}}</p>
+            </div>
+        </div>
     </div>
+    <div class="col-6">
+        {% if score is not null %}
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">Résultats du Quizz</h3>
+                <p>Votre score est de {{ score }} sur {{ total }}.</p>
+            </div>
+        </div>
+        <a href="{{ path('app_quizz_front_listequizz', {'id' : quizz.id}) }}" class="btn btn-primary w-100 my-3">Sommaire des quizz</a>
+       
+        {% endif %}
+    </div>
+    
 </div>
 
-{% if score is not null %}
-<h1>Résultats du Quizz</h1>
-<p>Votre score est de {{ score }} sur {{ total }}.</p>
-<hr>
-<a href="{{ path('app_quizz_front_listequizz', {'id' : quizz.id}) }}" class="btn btn-primary my-3">Retour</a>
-{% endif %}
+<div class="mb-5">
+
 <form method="post">
     {% for index, question in quizz.quizzQuestions %}
     <div class="card my-4">
@@ -27,19 +39,23 @@
             <h5>{{question.question}}</h5>
         </div>
         <ul class="list-group list-group-flush">
-        {% for choiceIndex, reponse in question.quizzChoices %}
+            {% for choiceIndex, reponse in question.quizzChoices %}
 
             <li class="list-group-item {{ solution(reponse, score)}}">
-                <input type="checkbox" {{ maselection(quizzU, question.id, reponse.id) }} name="answers[{{ question.id }}][{{ reponse.id }}]" value="1">
-                {{reponse.reponse}}
+                <input type="checkbox" {{ maselection(quizzU, question.id, reponse.id) }}
+                    name="answers[{{ question.id }}][{{ reponse.id }}]" value="1">
+                {{reponse.reponse }}
             </li>
-        {% endfor %}
-    </ul>
+            {% endfor %}
+        </ul>
     </div>
     {% endfor %}
     {% if score is null %}
-    <input type="submit"  class="btn btn-success w-100" value="Submit">
+    <input type="submit" class="btn btn-success w-100" value="Valider mes choix">
     {% endif %}
 </form>
-<a href="{{ path('app_quizz_front_listequizz', {'id' : quizz.id}) }}" class="btn btn-primary my-3">Retour</a>
+{% if score is not null %}
+<a href="{{ path('app_quizz_front_listequizz', {'id' : quizz.id}) }}" class="btn btn-primary w-100 my-3">Sommaire des quizz</a>
+{% endif %}
+</div>
 {% endblock %}

@@ -3,6 +3,7 @@
 namespace App\Controller\Quizz\Front;
 
 use App\Entity\Quizz\Quizz;
+use App\Service\ScoreService;
 use App\Entity\Quizz\QuizzUser;
 use App\Entity\Quizz\QuizzCategories;
 use App\Entity\Quizz\QuizzUserAnswers;
@@ -43,7 +44,7 @@ class HomeController extends AbstractController
 
 
     #[Route('/quizz/quizz/{id}', name: 'app_quizz_front_quizz')]
-    public function quizz(Quizz $quizz, Request $request, EntityManagerInterface $entityManager, QuizzQuestionsRepository $questionsRepository, QuizzChoicesRepository $choicesRepository): Response
+    public function quizz(ScoreService $scoreService, Quizz $quizz, Request $request, EntityManagerInterface $entityManager, QuizzQuestionsRepository $questionsRepository, QuizzChoicesRepository $choicesRepository): Response
     {
         // Par defaut on ne veux pas de la correction.
         $score = null;
@@ -52,8 +53,9 @@ class HomeController extends AbstractController
             // $answers = $request->request->get('answers');
             $post = $request->request->all();
             $answers = $post['answers'];
+            $score = $scoreService->calculateScore($answers);
             // La on veux maintenant les corrections.
-            $score = 20;
+           
             // On enregistre la partie
             $quizzUser = new QuizzUser();
             $quizzUser->setQuizz($quizz);
@@ -79,7 +81,7 @@ class HomeController extends AbstractController
 
         return $this->render('quizz/front/quizz.html.twig', [
             'quizzU' => $quizzUser,
-            'total' => 0,
+            'total' => count($quizz->getQuizzQuestions()),
             'score' => $score,
             'controller_name' => 'HomeController',
             'quizz' => $quizz,
