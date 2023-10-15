@@ -14,23 +14,41 @@ class QuizzExtension extends AbstractExtension
     private Environment $twig;
     private $quizzUserAnswersRepository;
     private $quizzUserRepository;
-  
+
     public function __construct(Environment $twig, QuizzUserAnswersRepository $quizzUserAnswersRepository, QuizzUserRepository $quizzUserRepository)
     {
         $this->twig = $twig;
         $this->quizzUserAnswersRepository = $quizzUserAnswersRepository;
         $this->quizzUserRepository = $quizzUserRepository;
-      
     }
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('solution', [ $this, 'solution' ], [ 'is_safe' => [ 'html' ] ]),
-            new TwigFunction('maselection', [ $this, 'maselection' ], [ 'is_safe' => [ 'html' ] ]),
+            new TwigFunction('solution', [$this, 'solution'], ['is_safe' => ['html']]),
+            new TwigFunction('maselection', [$this, 'maselection'], ['is_safe' => ['html']]),
+            new TwigFunction('bonneReponse', [$this, 'bonneReponse'], ['is_safe' => ['html']]),
+            new TwigFunction('illustrations', [$this, 'illustrations'], ['is_safe' => ['html']]),
         ];
     }
-    
 
+
+    public function illustrations($illustrations)
+    {
+        $nbIllustrations = count($illustrations);
+        $html = $this->twig->render('quizz/front/_illustration.html.twig', [
+                'illustrations' => $illustrations,
+                'nbillustration' => $nbIllustrations,
+            ]);
+        return $html;
+    }
+
+
+    public function bonneReponse($choice)
+    {
+        if ($choice) {
+            return  "bg-success";
+        }
+    }
 
     /**
      * Returns the HTML attribute "checked" if the user has selected the given answer for the given question in the given quiz.
@@ -40,9 +58,10 @@ class QuizzExtension extends AbstractExtension
      * @param int $reponse The ID of the answer.
      * @return string|null The string "checked" if the user has selected the given answer for the given question in the given quiz, null otherwise.
      */
-    public function maselection($partie, $question, $reponse){
-        $reponseUtilisateur =  $this->quizzUserAnswersRepository->findBy(['userQuizz'=>$partie, 'question' => $question, 'choice' => $reponse]);
-        if($reponseUtilisateur){
+    public function maselection($partie, $question, $reponse)
+    {
+        $reponseUtilisateur =  $this->quizzUserAnswersRepository->findBy(['userQuizz' => $partie, 'question' => $question, 'choice' => $reponse]);
+        if ($reponseUtilisateur) {
             return  'checked="checked"';
         }
     }
@@ -54,15 +73,16 @@ class QuizzExtension extends AbstractExtension
      * @param bool $score The score of the quiz question.
      * @return string The CSS class to display the solution.
      */
-    public function solution($choice, $score){
+    public function solution($choice, $score)
+    {
 
-        if($score){
-            if($choice->isIsCorrect()){
-                $class ="bg-success";
-            }else{
-                $class ="text-danger";
+        if ($score) {
+            if ($choice->isIsCorrect()) {
+                $class = "bg-success";
+            } else {
+                $class = "text-danger";
             }
-        }else{
+        } else {
             $class = "";
         }
         return  $class;

@@ -1,6 +1,5 @@
 <div class="landing-top-header overflow-hidden">
-	<div
-		class="top sticky overflow-hidden">
+	<div class="top sticky overflow-hidden">
 		<!--APP-SIDEBAR-->
 		<div class="app-sidebar__overlay" data-bs-toggle="sidebar"></div>
 		<div class="app-sidebar bg-transparent horizontal-main">
@@ -12,36 +11,49 @@
 							<img src="{{absolute_url(asset('build/images/brand/logo.png'))}}" class="logo-3" alt="logo">
 						</a>
 						<ul class="side-menu">
-							<li class="slide">
-								<a class="side-menu__item active" data-bs-toggle="slide" href="{{ absolute_url(path('app_home')) }}">
+							{# <li class="slide">
+								<a class="side-menu__item active" data-bs-toggle="slide"
+									href="{{ absolute_url(path('app_home')) }}">
 									<span class="side-menu__label">Home</span>
 								</a>
-							</li>
-							<li class="slide">
-								<a class="side-menu__item" data-bs-toggle="slide" href="{{ absolute_url(path('app_quizz_front_categories')) }}">
+							</li> #}
+							{# <li class="slide">
+								<a class="side-menu__item" data-bs-toggle="slide"
+									href="{{ absolute_url(path('app_quizz_front_categories')) }}">
 									<span class="side-menu__label">Catégories</span>
 								</a>
 							</li>
 							<li class="slide">
-								<a class="side-menu__item" data-bs-toggle="slide" href="{{ absolute_url(path('app_quizz_front_listequizz_all')) }}">
+								<a class="side-menu__item" data-bs-toggle="slide"
+									href="{{ absolute_url(path('app_quizz_front_listequizz_all')) }}">
 									<span class="side-menu__label">Quizz</span>
 								</a>
-							</li>
-							<li class="slide">
+							</li> #}
+							{# <li class="slide">
 								<a class="side-menu__item" data-bs-toggle="slide" href="#Contact">
 									<span class="side-menu__label">Contact</span>
 								</a>
-							</li>
+							</li> #}
 						</ul>
 						<div class="header-nav-right d-none d-lg-flex">
-							{%  if  is_granted ( 'IS_AUTHENTICATED_REMEMBERED' )  %}
-								<a href="{{ absolute_url(path('app_logout')) }}" class="btn ripple btn-min w-sm btn-primary me-2 my-auto d-lg-none d-xl-block d-block">Déconnexion
-								</a>
+							{% if is_granted ( 'IS_AUTHENTICATED_REMEMBERED' ) %}
+							{% if is_granted('ROLE_ADMIN') %}
+
+							<a class="dropdown-item" href="{{ path('app_backoffice_home')}}">Administration</a>
+
+							{% endif %}
+							
+							<a href="{{ absolute_url(path('app_logout')) }}"
+								class="btn ripple btn-min w-sm btn-primary me-2 my-auto d-lg-none d-xl-block d-block">Déconnexion
+							</a>
+							
 							{% else %}
-								<a href="{{ absolute_url(path('app_register')) }}" class="btn ripple btn-min w-sm btn-outline-primary me-2 my-auto d-lg-none d-xl-block d-block">S'inscrire
-								</a>
-								<a href="{{ absolute_url(path('app_login')) }}" class="btn ripple btn-min w-sm btn-primary me-2 my-auto d-lg-none d-xl-block d-block">Connexion
-								</a>
+							<a href="{{ absolute_url(path('app_register')) }}"
+								class="btn ripple btn-min w-sm btn-outline-primary me-2 my-auto d-lg-none d-xl-block d-block">S'inscrire
+							</a>
+							<a href="{{ absolute_url(path('app_login')) }}"
+								class="btn ripple btn-min w-sm btn-primary me-2 my-auto d-lg-none d-xl-block d-block">Connexion
+							</a>
 							{% endif %}
 						</div>
 					</div>

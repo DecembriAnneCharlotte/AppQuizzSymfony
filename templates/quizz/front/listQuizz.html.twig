@@ -4,22 +4,28 @@
 
 {% block body %}
 
-    <h1>Liste des quizz</h1>
+<h1>{{categories.name}}</h1>
 
-    {% for quizz in categories.quizzs %}
+{% for quizz in categories.quizzs %}
 
-        <h5>{{categories.name}}</h5>
-
-        <div class="card w-200">
-            <h5 class="card-header">{{quizz.title}}</h5>
-            <div class="card-body">
-                <h5 class="card-title">Déscription :</h5>
-                <p class="card-text">{{quizz.description}}</p>
-                <a href="{{ path('app_quizz_front_quizz', {'id' : quizz.id})}}" class="btn btn-primary">Go somewhere</a>
-                <a href="{{ path('app_quizz_front_categories', {'id' : quizz.id}) }}" class="btn btn-primary my-3">Retour</a>
-            </div>
+<div class="card">
+    <h5 class="card-header">{{quizz.title}}</h5>
+    <div class="card-body row">
+        <div class="col-4">
+            <img src="{{ asset('uploads/quizzs/') }}{{quizz.quizzIllustrations[0].file}}" class="rounded-top d-block"
+                alt="{{quizz.quizzIllustrations[0].file}}">
+        </div>
+        <div class="col-8">
+            <h5 class="card-title">Description :</h5>
+            <p class="card-text" style="text-align: justify;">{{quizz.description}}</p>
         </div>
 
-    {% endfor %}
+    </div>
+    <div class="card-footer">
+        <a href="{{ path('app_quizz_front_quizz', {'id' : quizz.id})}}" class="btn btn-primary">Tester vos
+            Connaissances</a>
+    </div>
+</div>
+{% endfor %}
 
 {% endblock %}

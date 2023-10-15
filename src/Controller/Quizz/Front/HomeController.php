@@ -9,6 +9,7 @@ use App\Entity\Quizz\QuizzCategories;
 use App\Entity\Quizz\QuizzUserAnswers;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\Quizz\QuizzRepository;
+use App\Repository\Quizz\QuizzUserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,11 +25,16 @@ class HomeController extends AbstractController
 
 
     #[Route('/quizz/home', name: 'app_quizz_front_categories')]
-    public function categories(QuizzCategoriesRepository $quizzcategorierepository): Response
+    public function categories(QuizzCategoriesRepository $quizzcategorierepository, QuizzRepository $quizzRepository): Response
     {
+         
+        
+
         return $this->render('quizz/front/catQuizz.html.twig', [
             'controller_name' => 'HomeController',
             'categories' => $quizzcategorierepository->findAll(),
+           
+         
         ]);
     }
 
@@ -60,6 +66,7 @@ class HomeController extends AbstractController
             $quizzUser = new QuizzUser();
             $quizzUser->setQuizz($quizz);
             $quizzUser->setUser($this->getUser());
+            $quizzUser->setScore($score);
             $entityManager->persist($quizzUser);
 
             // En enregitre les réponses données par l'user

@@ -15,9 +15,5 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
-    #[Route('/', name: 'app_home')]
-    public function redirectLogin(): Response
-    {
-        return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
-    }
+
 }

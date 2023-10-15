@@ -23,7 +23,7 @@
         {% for reponse in question.quizzChoices %}
 
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">- {{reponse}}</li>
+            <li class="list-group-item {{ bonneReponse(reponse.isCorrect)}}">- {{reponse}}</li>
         </ul>
 
         {% endfor %}

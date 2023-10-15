@@ -21,6 +21,18 @@ class QuizzRepository extends ServiceEntityRepository
         parent::__construct($registry, Quizz::class);
     }
 
+    public function findTopXMostPlayedQuizzes($limit = 10)
+    {
+        return $this->createQueryBuilder('q')
+            ->leftJoin('q.quizzUsers', 'uq')
+            ->select('q, COUNT(uq.id) as playCount')
+            ->groupBy('q.id')
+            ->orderBy('playCount', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Quizz[] Returns an array of Quizz objects
 //     */

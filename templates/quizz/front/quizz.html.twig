@@ -5,6 +5,7 @@
 {% block body %}
 
 <h1>Quizz</h1>
+
 <div class="row">
     <div class="col-6">
         <div class="card">
@@ -23,39 +24,49 @@
                 <p>Votre score est de {{ score }} sur {{ total }}.</p>
             </div>
         </div>
-        <a href="{{ path('app_quizz_front_listequizz', {'id' : quizz.id}) }}" class="btn btn-primary w-100 my-3">Sommaire des quizz</a>
-       
+        <a href="{{ path('app_quizz_front_listequizz', { 'id' : quizz.categorie[0].id })}}"
+            class="btn btn-primary w-100 my-3">Sommaire des quizz</a>
+
         {% endif %}
     </div>
-    
+
 </div>
 
 <div class="mb-5">
+    {% if is_granted ( 'IS_AUTHENTICATED_REMEMBERED' ) %}
+    <form method="post">
+        {% for index, question in quizz.quizzQuestions %}
+        <div class="card my-4">
+            <div class="card-header">
+                <h5>{{question.question}}</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for choiceIndex, reponse in question.quizzChoices %}
 
-<form method="post">
-    {% for index, question in quizz.quizzQuestions %}
-    <div class="card my-4">
-        <div class="card-header">
-            <h5>{{question.question}}</h5>
+                <li class="list-group-item {{ solution(reponse, score)}}">
+                    <input type="checkbox" {{ maselection(quizzU, question.id, reponse.id) }}
+                        name="answers[{{ question.id }}][{{ reponse.id }}]" value="1">
+                    {{reponse.reponse }}
+                </li>
+                {% endfor %}
+            </ul>
         </div>
-        <ul class="list-group list-group-flush">
-            {% for choiceIndex, reponse in question.quizzChoices %}
+        {% endfor %}
+        {% if score is null %}
 
-            <li class="list-group-item {{ solution(reponse, score)}}">
-                <input type="checkbox" {{ maselection(quizzU, question.id, reponse.id) }}
-                    name="answers[{{ question.id }}][{{ reponse.id }}]" value="1">
-                {{reponse.reponse }}
-            </li>
-            {% endfor %}
-        </ul>
+        <input type="submit" class="btn btn-success w-100" value="Valider mes choix">
+
+        {% endif %}
+    </form>
+    {% else %}
+    <div class="alert alert-warning" role="alert">
+        Vous devez avoir un compte et être connecté pour acceder au Quizz
     </div>
-    {% endfor %}
-    {% if score is null %}
-    <input type="submit" class="btn btn-success w-100" value="Valider mes choix">
     {% endif %}
-</form>
-{% if score is not null %}
-<a href="{{ path('app_quizz_front_listequizz', {'id' : quizz.id}) }}" class="btn btn-primary w-100 my-3">Sommaire des quizz</a>
-{% endif %}
+
+    {% if score is not null %}
+    <a href="{{ path('app_quizz_front_listequizz', {'id' : quizz.id}) }}" class="btn btn-primary w-100 my-3">Sommaire
+        des quizz</a>
+    {% endif %}
 </div>
 {% endblock %}

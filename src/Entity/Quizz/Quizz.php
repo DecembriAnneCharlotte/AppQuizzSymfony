@@ -28,7 +28,7 @@ class Quizz
     #[ORM\OneToMany(mappedBy: 'quizz', targetEntity: QuizzQuestions::class)]
     private Collection $quizzQuestions;
 
-    #[ORM\OneToMany(mappedBy: 'quizz', targetEntity: QuizzIllustrations::class)]
+    #[ORM\OneToMany(mappedBy: 'quizz', targetEntity: QuizzIllustrations::class, cascade: ["persist"])]
     private Collection $quizzIllustrations;
 
     #[ORM\OneToMany(mappedBy: 'quizz', targetEntity: QuizzUser::class)]
